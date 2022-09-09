@@ -6,8 +6,6 @@
 #include <string.h>
 
 
-
-
 #include "core.h"
 
 int main ()
@@ -82,16 +80,31 @@ int main ()
     
     qsort (PtrArr, str_num, sizeof (char*), sor_cmp);
 
-    for (int i = 0; i < str_num; i++)
-    {
-        printf ("%d %s\n", i, PtrArr[i]);
-    }
+   // for (int i = 0; i < str_num; i++)
+   // {
+    //    printf ("%d %s\n", i, PtrArr[i]);
+   // }
 
     //printf ("%d\n", str_num);
 
     // free_arr (buf_size, (void**) Buf);
+
+
+    FILE* OutputFile = NULL;
+    OutputFile = fopen ("hamlet1.txt", "w");
+
+    assert (OutputFile != NULL);
+    
+    
+    for (int i = 0; i < str_num; i++)
+    {
+        fprintf (OutputFile, "%s\n", PtrArr[i]);
+    }
+
+    fclose (OutputFile);
+
     free (Buf);
     free (PtrArr);
-
+    
     return 0;
 }
