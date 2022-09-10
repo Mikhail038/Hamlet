@@ -1,2 +1,12 @@
+*.save
+*.html
+*.layout
+*.cbp
+*.exe
+*.depend
+*.bmarks
+*bin
+*obj
 *.o
+*makefile
 *.out
