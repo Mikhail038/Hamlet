@@ -5,7 +5,7 @@ char* clear_begining_of_line (char* line)
 {
     int i = 0, j = 0;
 
-    while  ((line[j] == ' ') or (line[j] == '[') or (line[j] == '(') or (line[j] == '\''))  j++;
+    while  ((line[j] == ' ')) j++;// or (line[j] == '[') or (line[j] == '(') or (line[j] == '\''))  j++;
 
     while (line[j] != '\0')
     {
