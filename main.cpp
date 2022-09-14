@@ -1,53 +1,64 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <locale.h>
-#include <string.h>
+
 #include "core.h"
+
 
 int main ()
 {
-    FILE* InputFile = NULL;
-    InputFile = fopen ("hamlet.txt", "r");
+    long int start = clock();
+
+    //printf ("%d\n", MyBackStrcmp ("bbaa!", "bbaa"));
+    FILE* InputFile = fopen ("hamlet.txt", "r");
     assert (InputFile != NULL);
+    if (errno != 0) perror ("Error");
 
-    int str_num = str_in_f (InputFile);
+    int AmntLines = count_lines_in_file (InputFile);
 
-    char** PtrArr = NULL;
-    PtrArr = (char**) calloc (str_num, sizeof (*PtrArr));
-    assert (PtrArr != NULL);
+    char** ArrLinePtrs = (char**) calloc (AmntLines, sizeof (*ArrLinePtrs));
+    assert (ArrLinePtrs != NULL);
+    if (errno != 0) perror ("Error");
 
-    int buf_size = 1 + sym_in_f (InputFile); //printf ("!!%d", buf_size);
+    int BufferSize = 1 + count_symbols_in_file (InputFile);
 
-    char* Buf = NULL;
-    Buf = (char*) calloc (buf_size, sizeof (*Buf));
+    char* Buf = (char*) calloc (BufferSize, sizeof (*Buf));
     assert (Buf != NULL);
+    if (errno != 0) perror ("Error");
 
-    fread (Buf, sizeof (char), buf_size, InputFile); 
-    Buf[buf_size - 1] = '\0';
+    fread (Buf, sizeof (char), BufferSize, InputFile);
+    Buf[BufferSize - 1] = '\0';
 
     fclose (InputFile);
 
+    char* BufCpy = strdup (Buf);
 
-    separate_buf (PtrArr, Buf, buf_size - 1);
-    
-    qsort (PtrArr, str_num, sizeof (char*), sor_cmp);
+    separate_buffer_on_lines (ArrLinePtrs, (const char*) BufCpy, BufferSize - 1);
 
-
-    FILE* OutputFile = NULL;
-    OutputFile = fopen ("hamlet1.txt", "w");
+    FILE* OutputFile = fopen ("hamlet1.txt", "w");
     assert (OutputFile != NULL);
-    
-    
-    for (int i = 0; i < str_num; i++)
+    if (errno != 0) perror ("Error");
+
+    for (int i = 0; i < AmntLines; i++)
     {
-        fprintf (OutputFile, "%s\n", PtrArr[i]);
+        clear_begining_of_line (ArrLinePtrs[i]);
     }
+
+    qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
+
+    print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
+
+    qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_end);
+
+    print_strings_in_file_backwards (OutputFile, AmntLines, ArrLinePtrs);
+
+    fputs (Buf, OutputFile);
+
 
     fclose (OutputFile);
 
     free (Buf);
-    free (PtrArr);
-    
+    free (BufCpy);
+    free (ArrLinePtrs);
+
+    printf ("%ld\n", clock() - start);
+
     return 0;
 }
