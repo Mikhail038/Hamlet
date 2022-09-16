@@ -1,11 +1,13 @@
 #include "core.h"
 
 
-char* clear_begining_of_line (char* line)
+void clear_begining_of_line (char* line)
 {
+    MCA (line != NULL, (void) 0);
+
     int i = 0, j = 0;
 
-    while  ((line[j] == ' ')) j++;// or (line[j] == '[') or (line[j] == '(') or (line[j] == '\''))  j++;
+    while  ((line[j] == ' ')) j++;
 
     while (line[j] != '\0')
     {
@@ -15,43 +17,46 @@ char* clear_begining_of_line (char* line)
     }
 
     line[i] = '\0';
-    return line;
 }
 
 int count_lines_in_file (FILE* stream)
 {
+    MCA (stream != NULL, -1);
+
     char sym = '\0';
-    int i = 0;
+    int AmntLines = 0;
 
     while ((sym = getc (stream)) != EOF)
     {
         if (sym != '\n')
         {
-            i++;
+            AmntLines++;
             while ((sym = getc (stream)) != '\n');
         }
     }
 
-    return i;
+    return AmntLines;
 }
 
 int count_symbols_in_file (FILE* stream)
 {
+    MCA (stream != NULL,  -1);
+
     fseek (stream, 0, SEEK_END);
 
-    int i = ftell (stream);
+    int AmntSymbols = ftell (stream);
 
     fseek (stream, 0, SEEK_SET);
-    return i;
+    return AmntSymbols;
 }
 
 int compare_strings_alphabet_start (const void* FirstLine, const void* SecondLine)
 {
-    char* FirstLineCpy =  *(char**) FirstLine;
-    char* SecondLineCpy = *(char**) SecondLine;
+    MCA (FirstLine != NULL, -1);
+    MCA (SecondLine != NULL, -1);
 
-    assert (FirstLineCpy != NULL);
-    assert (SecondLineCpy != NULL);
+    char* FirstLineCpy =  *(char**) FirstLine;
+    char* SecondLineCpy = *(char**) SecondLine;;
 
 
     return MyStrcmp ( (const char*) FirstLineCpy, (const char*) SecondLineCpy);
@@ -59,17 +64,20 @@ int compare_strings_alphabet_start (const void* FirstLine, const void* SecondLin
 
 int compare_strings_alphabet_end (const void* FirstLine, const void* SecondLine)
 {
+    MCA (FirstLine != NULL, -1);
+    MCA (SecondLine != NULL, -1);
+
     char* FirstLineCpy =  *(char**) FirstLine;
     char* SecondLineCpy = *(char**) SecondLine;
-
-    assert (FirstLineCpy != NULL);
-    assert (SecondLineCpy != NULL);
 
     return MyBackStrcmp ( (const char*) FirstLineCpy, (const char*) SecondLineCpy);
 }
 
 int MyStrcmp (const char* FirstLine, const char* SecondLine)
 {
+    MCA (FirstLine != NULL, -1);
+    MCA (SecondLine != NULL, -1);
+
     int length = strlen (FirstLine);
     int length2 = strlen (SecondLine);
 
@@ -103,6 +111,9 @@ int MyStrcmp (const char* FirstLine, const char* SecondLine)
 
 int MyBackStrcmp (const char* FirstLine, const char* SecondLine)
 {
+    MCA (FirstLine != NULL, -1);
+    MCA (SecondLine != NULL, -1);
+
     int length = strlen (FirstLine);
     int length2 = strlen (SecondLine);
 
@@ -134,64 +145,95 @@ int MyBackStrcmp (const char* FirstLine, const char* SecondLine)
     return (length - length2);
 }
 
-void separate_buffer_on_lines (char** arr, const char* buf, int n)
+void separate_buffer_on_lines (char** ArrLinePtrs, const char* Buffer, int AmntLines)
 {
-    int i = 0, j = 0, c = 0;
+    MCA (ArrLinePtrs != NULL, (void) 0);
+    MCA (Buffer != NULL, (void) 0);
+    MCA (AmntLines >= 0, (void) 0);
 
-    assert (arr != NULL);
-    assert (buf != NULL);
+    int FirstCharNum = 0, CharNum = 0, LineNumber = 0;
 
-    while (i < n)
+    while (FirstCharNum < AmntLines)
     {
-        j = 0;
+        CharNum = 0;
 
-        while (buf[i+j] != '\n')
+        while (Buffer[FirstCharNum + CharNum] != '\n')
         {
-            j++;
+            CharNum++;
         }
 
-        if (j != 0)
+        if (CharNum != 0)
         {
 
-            arr[c] = (char*) &(buf[i]);
+            ArrLinePtrs[LineNumber] = (char*) &(Buffer[FirstCharNum]);
 
-            (arr[c])[j] = '\0';
+            ArrLinePtrs[LineNumber][CharNum] = '\0';
 
-            c++;
+            LineNumber++;
         }
 
-        i += j + 1;
+        FirstCharNum += CharNum + 1;
     }
-
+    return;
 }
 
-void free_arr (int n, void** Arr)
+void print_strings_in_file (FILE* stream, int AmntLines, char** ArrLinePtrs)
 {
-    for (int i = 0; i < n; i++)
-    {
-        free (Arr[i]);
-    }
-    free (Arr);
+    MCA (stream != NULL, (void) 0);
+    MCA (ArrLinePtrs != NULL, (void) 0);
+    MCA (AmntLines >= 0, (void) 0);
 
-    Arr = NULL;
+    for (int LineNumber = 0; LineNumber < AmntLines; LineNumber++)
+    {
+        fprintf (stream, "%s\n", ArrLinePtrs[LineNumber]);
+    }
+    put_decor_line (stream);
+
+    return;
 }
 
-void print_strings_in_file (FILE* stream, int StrNum, char** Arr)
+void print_strings_in_file_backwards (FILE* stream, int AmntLines, char** ArrLinePtrs)
 {
-    for (int i = 0; i < StrNum; i++)
+    MCA (stream != NULL, (void) 0);
+    MCA (ArrLinePtrs != NULL, (void) 0);
+    MCA (AmntLines >= 0, (void) 0);
+
+    for (int LineNumber = 0; LineNumber < AmntLines; LineNumber++)
     {
-        fprintf (stream, "%s\n", Arr[i]);
+        fprintf (stream, "%70s\n", ArrLinePtrs[LineNumber]);
     }
+    put_decor_line (stream);
+
+    return;
+}
+
+void put_decor_line (FILE* stream)
+{
+    MCA (stream != NULL, (void) 0);
+
     fputs ("\n----------------------------------------------------"
-           "----------------------------------------------------\n\n", stream);
+           "------------------------------------------------------"
+           "\n----------------------------------------------------"
+           "------------------------------------------------------"
+           "\n\n", stream);
+
+    return;
 }
 
-void print_strings_in_file_backwards (FILE* stream, int StrNum, char** Arr)
+void MyBubSort (char** ArrayData, int AmntData, int SieDzata,  int (*comparator) (const void*, const void*))
 {
-    for (int i = 0; i < StrNum; i++)
+    char* buf = NULL;
+
+    for (int i = 0; i < AmntData; i++)
     {
-        fprintf (stream, "%70s\n", Arr[i]);
+        for (int j = 0; j < AmntData - 1; j++)
+        {
+            if (comparator ((const void*) ArrayData[j], (const void*) ArrayData[j + 1]) > 0)
+            {
+                 buf = ArrayData[j];
+                 ArrayData[j] = ArrayData[j + 1];
+                 ArrayData[j + 1] = buf;
+            }
+        }
     }
-    fputs ("\n----------------------------------------------------"
-           "----------------------------------------------------\n\n", stream);
 }
