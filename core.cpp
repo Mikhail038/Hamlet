@@ -220,20 +220,32 @@ void put_decor_line (FILE* stream)
     return;
 }
 
-void MyBubSort (char** ArrayData, int AmntData, int SieDzata,  int (*comparator) (const void*, const void*))
+void my_bub_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*))
 {
-    char* buf = NULL;
+    void* buf = NULL;
 
     for (int i = 0; i < AmntData; i++)
     {
         for (int j = 0; j < AmntData - 1; j++)
         {
-            if (comparator ((const void*) ArrayData[j], (const void*) ArrayData[j + 1]) > 0)
+            if (comparator ((const void*) (ArrayData + SizeData * j), (const void*) (ArrayData + SizeData * (j + 1))) > 0)
             {
-                 buf = ArrayData[j];
-                 ArrayData[j] = ArrayData[j + 1];
-                 ArrayData[j + 1] = buf;
+                change_byte_by_byte ((ArrayData + SizeData * j), (ArrayData + SizeData * (j + 1)), SizeData);
             }
         }
     }
+}
+
+void change_byte_by_byte (void* FirstData, void* SecondData, int Size)
+{
+    char buf = '\0';
+
+    for (int i = 0; i < Size; i++)
+    {
+        buf = ((char*) FirstData)[i];
+        ((char*) FirstData)[i] = ((char*) SecondData)[i];
+        ((char*) SecondData)[i] = buf;
+    }
+
+    return;
 }

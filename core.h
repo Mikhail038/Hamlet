@@ -8,7 +8,7 @@
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
-#include <ctime>
+
 
 #define DOTXT(Message) #Message
 
@@ -127,7 +127,24 @@ void print_strings_in_file_backwards (FILE* stream, int StrNum, char** ArrLinePt
 */
 void put_decor_line (FILE* stream);
 
-void MyBubSort (char** ArrayData, int AmntData, int SieDzata,  int (*comparator) (const void*, const void*));
+/*!
+    @brief Function that bubble-sorts the array of custom data
+
+    @param[in] ArrayData array of custom data
+    @param[in] AmntData amount of data in array
+    @param[in] SizeData size of one data
+    @param[in] comparator comparation function
+*/
+void my_bub_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*));
+
+/*!
+    @brief Function that changes two values byte by byte
+
+    @param[in] FirstData void* pointer to first value
+    @param[in] SecondData void* pointer to second value
+    @param[in] Size size of values
+*/
+void change_byte_by_byte (void* FirstData, void* SecondData, int Size);
 
 
 #endif
