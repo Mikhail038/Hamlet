@@ -40,14 +40,17 @@ int main ()
         clear_begining_of_line (ArrLinePtrs[LineNumber]);
     }
 
-    my_bub_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
+    my_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
     print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
 
-    //qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
+    //my_bub_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
     //print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
 
-    qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_end);
-    print_strings_in_file_backwards (OutputFile, AmntLines, ArrLinePtrs);
+    // qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
+    // print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
+
+    // qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_end);
+    // print_strings_in_file_backwards (OutputFile, AmntLines, ArrLinePtrs);
 
 
     fclose (OutputFile);

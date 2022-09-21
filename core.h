@@ -137,6 +137,8 @@ void put_decor_line (FILE* stream);
 */
 void my_bub_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*));
 
+void my_quick_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*));
+
 /*!
     @brief Function that changes two values byte by byte
 
@@ -144,7 +146,7 @@ void my_bub_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator
     @param[in] SecondData void* pointer to second value
     @param[in] Size size of values
 */
-void change_byte_by_byte (void* FirstData, void* SecondData, int Size);
+void swap (void* FirstData, void* SecondData, int Size);
 
 
 #endif

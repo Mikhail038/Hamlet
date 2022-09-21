@@ -83,26 +83,26 @@ int MyStrcmp (const char* FirstLine, const char* SecondLine)
 
     int min_length = (length < length2) ? length : length2;
 
-    int i = 0, j = 0;
+    int FirstLineElement = 0, SecondLineElement = 0;
 
-    while ((i < min_length) && (j < min_length))
+    while ((FirstLineElement < min_length) && (SecondLineElement < min_length))
     {
-        if (!isalpha (FirstLine[i]))
+        if (!isalpha (FirstLine[FirstLineElement]))
         {
-            i++;
+            FirstLineElement++;
         }
-        else if (!isalpha (SecondLine[j]))
+        else if (!isalpha (SecondLine[SecondLineElement]))
         {
-            j++;
+            SecondLineElement++;
         }
-        else if (FirstLine[i] != SecondLine[j])
+        else if (FirstLine[FirstLineElement] != SecondLine[SecondLineElement])
         {
-            return ((int) FirstLine[i] - (int) SecondLine[j]);
+            return ((int) FirstLine[FirstLineElement] - (int) SecondLine[SecondLineElement]);
         }
         else
         {
-            i++;
-            j++;
+            FirstLineElement++;
+            SecondLineElement++;
         }
     }
 
@@ -230,13 +230,60 @@ void my_bub_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator
         {
             if (comparator ((const void*) (ArrayData + SizeData * j), (const void*) (ArrayData + SizeData * (j + 1))) > 0)
             {
-                change_byte_by_byte ((ArrayData + SizeData * j), (ArrayData + SizeData * (j + 1)), SizeData);
+                swap ((ArrayData + SizeData * j), (ArrayData + SizeData * (j + 1)), SizeData);
             }
         }
     }
 }
 
-void change_byte_by_byte (void* FirstData, void* SecondData, int Size)
+void my_quick_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*))
+{
+    if (AmntData == 1)
+        return;
+
+    //if (AmntData != 3) '
+    //printf ("'%d'\n", AmntData);
+    int pivot = AmntData / 2;
+
+    int left = 1;
+    int right = AmntData - 1;
+
+    while (left <= right)
+    {
+        swap (ArrayData, ArrayData + pivot * SizeData, SizeData);
+        pivot = 0;
+
+        while (comparator ((const void*) (ArrayData + SizeData * left), (const void*) (ArrayData + pivot * SizeData))  < 0)
+        {
+            //printf ("'%d' '%d'\n", left, right);
+            left++;
+        }
+
+        while (comparator ((const void*) (ArrayData + SizeData * right), (const void*) (ArrayData + pivot * SizeData)) > 0)
+        {
+            //printf ("'%d' '%d'\n", left, right);
+            right--;
+        }
+
+        if (left <= right)
+        {
+            swap ((ArrayData + SizeData * left), (ArrayData + SizeData * right), SizeData);
+            left++;
+            right--;
+        }
+
+        swap (ArrayData, ArrayData + left * SizeData, SizeData);
+    }
+
+    if (right > 0)
+        my_quick_sort (ArrayData + right * SizeData, AmntData - right, SizeData, comparator);
+    if (left < AmntData - 1)
+        my_quick_sort (ArrayData, left + 1, SizeData, comparator);
+
+
+}
+
+void swap (void* FirstData, void* SecondData, int Size)
 {
     char buf = '\0';
 
