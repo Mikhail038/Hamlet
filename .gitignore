@@ -8,5 +8,5 @@
 *bin
 *obj
 *.o
-*makefile
 *.out
+*hamlet1.txt

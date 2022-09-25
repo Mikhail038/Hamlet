@@ -23,8 +23,7 @@ int main ()
 
     fclose (InputFile);
 
-
-    FILE* OutputFile = fopen ("hamlet1.txt", "w");
+    FILE* OutputFile = fopen ("hamlet_sorted.txt", "w");
     MCA (OutputFile != NULL, 1);
 
     //fseek (OutputFile, 2 * BufferSize, SEEK_SET);
@@ -40,8 +39,11 @@ int main ()
         clear_begining_of_line (ArrLinePtrs[LineNumber]);
     }
 
-    my_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
+    my_final_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
     print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
+
+    my_final_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_end);
+    print_strings_in_file_backwards (OutputFile, AmntLines, ArrLinePtrs);
 
     //my_bub_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
     //print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
@@ -60,3 +62,13 @@ int main ()
 
     return 0;
 }
+
+// int func (//)
+// {
+//
+// }
+//
+// int func2 ()
+// {
+//
+// }
