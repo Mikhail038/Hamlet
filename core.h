@@ -1,3 +1,6 @@
+//! @file HEADER FILE
+
+
 #ifndef CORE_H
 #define CORE_H
 
@@ -8,6 +11,7 @@
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
+
 
 
 #define DOTXT(Message) #Message
@@ -31,22 +35,7 @@
         } while (0)
 
 
-/*!
-    @brief Function that auick-sorts the array of custom data
 
-    @param[in] ArrayData array of custom data
-    @param[in] AmntData amount of data in array
-    @param[in] SizeData size of one data
-    @param[in] comparator comparation function
-*/
-void my_final_quick_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*));
-
-//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-void not_my_qsort (void* array, size_t n_memb,  size_t el_size, int (*comparator) (const void*, const void*));
-
-unsigned paritation (char* array, size_t n_memb, size_t el_size, unsigned pivot_index, int (*comparator) (const void*, const void*));
-//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 /*!
     @brief Function that restructurize string, deletes ' ' in the begining of it
@@ -155,6 +144,14 @@ void put_decor_line (FILE* stream);
 */
 void my_bub_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*));
 
+/*!
+    @brief Function that auick-sorts the array of custom data
+
+    @param[in] ArrayData array of custom data
+    @param[in] AmntData amount of data in array
+    @param[in] SizeData size of one data
+    @param[in] comparator comparation function
+*/
 void my_quick_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*));
 
 /*!

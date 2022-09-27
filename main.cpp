@@ -1,3 +1,6 @@
+//! @file MAIN FILE
+
+
 #include "core.h"
 
 
@@ -26,9 +29,7 @@ int main ()
     FILE* OutputFile = fopen ("hamlet_sorted.txt", "w");
     MCA (OutputFile != NULL, 1);
 
-    //fseek (OutputFile, 2 * BufferSize, SEEK_SET);
     fputs (Buf, OutputFile);
-    //fseek (OutputFile, 0, SEEK_SET);
 
     put_decor_line (OutputFile);
 
@@ -39,21 +40,11 @@ int main ()
         clear_begining_of_line (ArrLinePtrs[LineNumber]);
     }
 
-    my_final_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
+    my_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
     print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
 
-    my_final_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_end);
+    my_quick_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_end);
     print_strings_in_file_backwards (OutputFile, AmntLines, ArrLinePtrs);
-
-    //my_bub_sort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
-    //print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
-
-    // qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_start);
-    // print_strings_in_file (OutputFile, AmntLines, ArrLinePtrs);
-
-    // qsort (ArrLinePtrs, AmntLines, sizeof (char*), compare_strings_alphabet_end);
-    // print_strings_in_file_backwards (OutputFile, AmntLines, ArrLinePtrs);
-
 
     fclose (OutputFile);
 

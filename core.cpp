@@ -1,5 +1,7 @@
-#include "core.h"
+//! @file FUNCTIONS FILE
 
+
+#include "core.h"
 
 void clear_begining_of_line (char* line)
 {
@@ -238,46 +240,6 @@ void my_bub_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator
 
 void my_quick_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*))
 {
-    if (AmntData == 1)
-        return;
-
-    //if (AmntData != 3) '
-    //printf ("'%d'\n", AmntData);
-    int pivot = AmntData / 2;
-
-    int left = 0;
-    int right = AmntData - 1;
-
-    while (left <= right)
-    {
-        while (comparator ((const void*) (ArrayData + SizeData * left), (const void*) (ArrayData + pivot * SizeData))  < 0)
-        {
-            //printf ("'%d' '%d'\n", left, right);
-            left++;
-        }
-
-        while (comparator ((const void*) (ArrayData + SizeData * right), (const void*) (ArrayData + pivot * SizeData)) > 0)
-        {
-            //printf ("'%d' '%d'\n", left, right);
-            right--;
-        }
-
-        if (left <= right)
-        {
-            swap ((ArrayData + SizeData * left), (ArrayData + SizeData * right), SizeData);
-            left++;
-            right--;
-        }
-    }
-
-    if (right > 0)
-        my_quick_sort (ArrayData + right  * SizeData, AmntData - right, SizeData, comparator);
-    if (left < AmntData - 1)
-        my_quick_sort (ArrayData, left + 1, SizeData, comparator);
-}
-
-void my_final_quick_sort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*))
-{
     int right = AmntData - 1,
         pivot = right / 2;
 
@@ -285,77 +247,22 @@ void my_final_quick_sort (void* ArrayData, int AmntData, int SizeData,  int (*co
         return;
 
     swap (ArrayData, ArrayData + pivot * SizeData, SizeData);
-    pivot = 0;
+    int left = 0;
 
     for (int i = 1; i <= right; i++)
     {
         if (comparator (ArrayData + i * SizeData, ArrayData) < 0)
         {
-            pivot++;
-            swap (ArrayData + i * SizeData, ArrayData + pivot * SizeData, SizeData);
-        }
-    }
-
-    swap (ArrayData, ArrayData + pivot * SizeData, SizeData);
-
-    my_final_quick_sort (ArrayData,                          pivot,                SizeData, comparator);
-    my_final_quick_sort (ArrayData + (pivot + 1) * SizeData, AmntData - pivot - 1, SizeData, comparator);
-}
-
-//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-void not_my_qsort (void* ArrayData, size_t AmntData,  size_t SizeData, int (*comparator) (const void*, const void*))
-{
-    MCA (ArrayData != NULL, (void) 0);
-    MCA (comparator != NULL, (void) 0);
-
-    if (AmntData <= 1)
-    {
-        return;
-    }
-
-    char* array_pointer = (char*) ArrayData;
-
-    unsigned pivot_index = AmntData / 2;
-    unsigned left = paritation (array_pointer, AmntData, SizeData, pivot_index, comparator);
-
-    if (left > 0)
-    {
-        not_my_qsort (array_pointer, left, SizeData, comparator);
-    }
-
-    if (AmntData - left - 1 > 0)
-    {
-        not_my_qsort (array_pointer + (left + 1) * SizeData, AmntData - left - 1, SizeData, comparator);
-    }
-}
-
-unsigned paritation (char* ArrayData, size_t AmntData, size_t SizeData, unsigned pivot_index, int (*comparator) (const void*, const void*))
-{
-    MCA (ArrayData != NULL, 0);
-    MCA (comparator != NULL, 0);
-
-
-    void* pivot = ArrayData + pivot_index * SizeData;
-    unsigned left = 0;
-
-    swap (ArrayData, pivot, SizeData);
-    pivot = ArrayData;
-
-    for (unsigned i = 1; i < AmntData; i++)
-    {
-        if (comparator (ArrayData + i * SizeData, pivot) < 0)
-        {
             left++;
-            swap (ArrayData + left * SizeData, ArrayData + i * SizeData, SizeData);
+            swap (ArrayData + i * SizeData, ArrayData + left * SizeData, SizeData);
         }
     }
 
-    swap (pivot, ArrayData + left * SizeData, SizeData);
+    swap (ArrayData, ArrayData + left * SizeData, SizeData);
 
-    return left;
+    my_quick_sort (ArrayData,                          left,               SizeData, comparator);
+    my_quick_sort (ArrayData + (left + 1) * SizeData, AmntData - left - 1, SizeData, comparator);
 }
-//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
 static void swap (void* FirstData, void* SecondData, int Size)
 {
@@ -370,3 +277,43 @@ static void swap (void* FirstData, void* SecondData, int Size)
 
     return;
 }
+
+// void my_bad_qsort (void* ArrayData, int AmntData, int SizeData,  int (*comparator) (const void*, const void*))
+// {
+//     if (AmntData == 1)
+//         return;
+
+//     //if (AmntData != 3) '
+//     //printf ("'%d'\n", AmntData);
+//     int pivot = AmntData / 2;
+
+//     int left = 0;
+//     int right = AmntData - 1;
+
+//     while (left <= right)
+//     {
+//         while (comparator ((const void*) (ArrayData + SizeData * left), (const void*) (ArrayData + pivot * SizeData))  < 0)
+//         {
+//             //printf ("'%d' '%d'\n", left, right);
+//             left++;
+//         }
+
+//         while (comparator ((const void*) (ArrayData + SizeData * right), (const void*) (ArrayData + pivot * SizeData)) > 0)
+//         {
+//             //printf ("'%d' '%d'\n", left, right);
+//             right--;
+//         }
+
+//         if (left <= right)
+//         {
+//             swap ((ArrayData + SizeData * left), (ArrayData + SizeData * right), SizeData);
+//             left++;
+//             right--;
+//         }
+//     }
+
+//     if (right > 0)
+//         my_quick_sort (ArrayData + right  * SizeData, AmntData - right, SizeData, comparator);
+//     if (left < AmntData - 1)
+//         my_quick_sort (ArrayData, left + 1, SizeData, comparator);
+// }
